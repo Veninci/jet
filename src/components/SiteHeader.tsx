@@ -60,8 +60,8 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
         className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,backdrop-filter] duration-500 ease-[var(--ease-out-expo)]
           ${hidden && !open ? "-translate-y-full" : "translate-y-0"} ${scrolled ? "bg-white/80 backdrop-blur-xl" : "bg-transparent"}`}>
         <div className={`wrap flex items-center justify-between py-4 ${text}`}>
-          <Link href="/" className="text-[26px] font-bold tracking-[-0.04em]" aria-label={`${site.name} — accueil`}>
-            {site.name}<sup className="ml-0.5 align-super text-[10px] font-normal">®</sup>
+          <Link href="/" className="text-[26px] font-bold tracking-[-0.05em]" aria-label={`${site.name} — accueil`}>
+            {site.name}
           </Link>
           <nav aria-label="Navigation principale" className="hidden items-center gap-8 text-[17px] md:flex">
             {links.slice(0, 3).map((l) => (

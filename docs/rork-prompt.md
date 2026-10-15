@@ -1,4 +1,4 @@
-# Prompt Rork — application mobile Aelys
+# Prompt Rork — application mobile MACH
 
 Copier le bloc ci-dessous dans Rork. Remplacer `https://VOTRE-DOMAINE` par l'URL du site déployé
 (l'API doit être en ligne : Rork ne peut pas joindre `localhost`).
@@ -6,7 +6,7 @@ Copier le bloc ci-dessous dans Rork. Remplacer `https://VOTRE-DOMAINE` par l'URL
 ---
 
 ```
-Crée une application mobile iOS et Android (Expo, React Native, Expo Router, TypeScript) nommée « Aelys »,
+Crée une application mobile iOS et Android (Expo, React Native, Expo Router, TypeScript) nommée « MACH »,
 pour réserver des vols Empty Leg en jet privé. L'app est un client d'une API existante : elle ne doit avoir
 AUCUNE base de données ni backend propre. Toutes les données viennent de l'API ci-dessous.
 

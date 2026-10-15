@@ -17,7 +17,11 @@ export function getConnector(id: ProviderId) {
  *  2) un administrateur a validé manuellement l'intégration (réponse réelle testée, conditions lues).
  */
 export async function activeConnectors(): Promise<EmptyLegConnector[]> {
-  const verified = (await getSetting<Record<string, boolean>>("providers.verified")) ?? {};
+  // Base indisponible (build, incident) : on continue sans fournisseur externe plutôt que de planter la page.
+  const verified = (await getSetting<Record<string, boolean>>("providers.verified").catch((e) => {
+    console.error("[registry] lecture des réglages impossible :", (e as Error).message);
+    return null;
+  })) ?? {};
   return allConnectors.filter((c) => {
     if (c.id === "demo") return demoCatalogEnabled;
     if (c.id === "manual") return true;

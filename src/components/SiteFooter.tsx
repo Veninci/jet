@@ -34,7 +34,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="wrap">
-        <p data-grow="" aria-hidden="true" className="t-hero origin-bottom-left text-[27vw] leading-[0.78] md:text-[min(25vw,300px)]">{site.name}<sup className="align-super text-[0.12em] font-normal">®</sup></p>
+        <p data-grow="" aria-hidden="true" className="t-hero origin-bottom-left text-[27vw] leading-[0.78] tracking-[-0.035em] md:text-[min(24vw,300px)]">{site.name}</p>
       </div>
       <div className="wrap flex flex-col gap-2 border-t border-white/10 py-6 text-[13px] text-ash sm:flex-row sm:justify-between">
         <span>© {new Date().getFullYear()} {site.name}</span>

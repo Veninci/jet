@@ -53,11 +53,11 @@ export default async function HomePage() {
             </p>
           </div>
           <div>
-            <p aria-hidden="true" className="t-hero -ml-[0.04em] flex overflow-hidden pb-[0.04em] text-[29vw] sm:text-[min(24vw,300px)]">
+            <p aria-hidden="true" className="t-hero -ml-[0.04em] flex overflow-hidden pb-[0.02em] text-[27vw] tracking-[-0.035em] sm:text-[min(22vw,290px)]">
               {word.split("").map((ch, i) => (
                 <span key={i} data-hero-letter-out="" className="inline-block"><span data-hero-letter="" className="inline-block">{ch}</span></span>
               ))}
-              <sup className="mt-[0.1em] text-[0.12em] font-normal">®</sup>
+              
             </p>
             <div data-hero-search="" className="mt-4"><div data-hero-fade=""><SearchBox /></div></div>
           </div>

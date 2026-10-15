@@ -1,7 +1,7 @@
 # Plateforme Empty Legs — MVP (étape 2)
 
 Site premium (thème sombre) + réservation en 2 écrans + base PostgreSQL + administration commerciale + API publique v1 partagée avec l'app mobile (Rork) + couche de connecteurs fournisseurs.
-Nom de marque provisoire : **Aelys** (variable `NEXT_PUBLIC_SITE_NAME`) — à valider par une recherche d'antériorité INPI/EUIPO.
+Marque : **MACH** (variable `NEXT_PUBLIC_SITE_NAME`). Antériorités à vérifier (INPI/EUIPO) : des opérateurs charter « Mach Aviation » et « MachJet » existent. Pas de symbole ® tant que la marque n'est pas enregistrée.
 
 ## Stack
 Next.js 16 (App Router, TypeScript) · PostgreSQL + Prisma 6 · Tailwind CSS 4 · Zod · sessions JWT signées (jose) + bcrypt · Resend (HTTP) pour les e-mails · Vitest.
@@ -18,6 +18,8 @@ Animation : GSAP 3.15 + ScrollTrigger (licence « Standard no charge », usage c
 - Les pages Google Ads (`/lp/*`) n'ont volontairement aucune 3D, pour un affichage immédiat.
 
 ## Démarrer
+> Pas développeur ? Suivez **[LANCER-EN-LOCAL.md](LANCER-EN-LOCAL.md)** (3 commandes, Docker + Node.js).
+
 ```bash
 cp .env.example .env            # renseigner DATABASE_URL et AUTH_SECRET (openssl rand -base64 48)
 npm install

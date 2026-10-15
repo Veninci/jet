@@ -1,0 +1,22 @@
+# Base de données locale pour essayer le site sur votre ordinateur.
+# Démarrer : docker compose up -d     Arrêter : docker compose down
+# (port 5433 pour ne pas entrer en conflit avec un PostgreSQL déjà installé)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mach
+      POSTGRES_PASSWORD: mach
+      POSTGRES_DB: mach
+    ports:
+      - "5433:5432"
+    volumes:
+      - mach-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mach -d mach"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  mach-db:

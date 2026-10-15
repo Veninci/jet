@@ -1,6 +1,6 @@
 export const site = {
-  // Nom provisoire : à valider (recherche d'antériorité INPI/EUIPO) avant tout dépôt ou campagne.
-  name: process.env.NEXT_PUBLIC_SITE_NAME ?? "Aelys",
+  // MACH — antériorités à vérifier (INPI/EUIPO) : des opérateurs charter « Mach Aviation » / « MachJet » existent.
+  name: process.env.NEXT_PUBLIC_SITE_NAME ?? "MACH",
   tagline: "Empty Legs en jet privé",
   url: (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
   phone: process.env.NEXT_PUBLIC_SALES_PHONE ?? "",
