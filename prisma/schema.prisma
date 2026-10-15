@@ -79,7 +79,11 @@ model Lead {
   passengers      Int
   budget          Int?
   currency        String     @default("EUR")
+  cabinBags       Int?
+  holdBags        Int?
   comments        String?
+  /// Canal de la demande : web | mobile
+  channel         String     @default("web")
   offerId         String?
   offer           Offer?     @relation(fields: [offerId], references: [id], onDelete: SetNull)
   offerSnapshot   Json?

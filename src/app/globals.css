@@ -1,11 +1,26 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
+@import "@fontsource/cormorant-garamond/300.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
 @import "@fontsource/cormorant-garamond/500.css";
-@import "@fontsource/cormorant-garamond/600.css";
 
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+
+  /* Site public : nuit, perle, champagne */
+  --color-night: #07080b;
+  --color-night-2: #0d1015;
+  --color-night-3: #141820;
+  --color-night-4: #1c212b;
+  --color-pearl: #f3efe7;
+  --color-smoke: #a3a9b4;
+  --color-ash: #6f7682;
+  --color-champagne: #cfb37e;
+  --color-champagne-soft: #e6d3a8;
+
+  /* Back-office (clair) */
   --color-ink: #0f1a2a;
   --color-ink-soft: #24324a;
   --color-ivory: #f7f4ee;
@@ -14,14 +29,50 @@
   --color-gold: #a8875a;
   --color-gold-deep: #8a6c43;
   --color-mist: #6b7486;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-body { background: var(--color-ivory); color: var(--color-ink); }
+body { background: var(--color-night); color: var(--color-pearl); }
+::selection { background: var(--color-champagne); color: var(--color-night); }
 
-.font-display { letter-spacing: -0.01em; }
+.font-display { letter-spacing: -0.015em; }
+.hairline { border-color: rgb(255 255 255 / 0.09); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
 
-/* Champs de formulaire cohérents et confortables sur iPhone (16px évite le zoom automatique). */
+@layer components {
+/* ---------- Site public ---------- */
+.lx-eyebrow { @apply text-[10.5px] font-medium tracking-[0.32em] text-champagne uppercase; }
+.lx-label { @apply mb-2 block text-[10.5px] font-medium tracking-[0.2em] text-smoke uppercase; }
+.lx-field {
+  @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-base text-pearl outline-none transition duration-300
+    placeholder:text-ash focus:border-champagne/70 focus:bg-white/[0.06] focus:ring-4 focus:ring-champagne/10;
+  color-scheme: dark;
+}
+.lx-btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-champagne px-7 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-night uppercase
+    transition duration-300 ease-[var(--ease-lux)] hover:bg-champagne-soft focus-visible:outline-2 focus-visible:outline-offset-4
+    focus-visible:outline-champagne disabled:opacity-50;
+}
+.lx-btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-[13px] font-medium tracking-[0.06em] text-pearl
+    transition duration-300 hover:border-pearl/70 hover:bg-white/5;
+}
+.lx-card { @apply rounded-2xl border border-white/[0.08] bg-night-2; }
+.lx-chip { @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide; }
+
+}
+
+@keyframes lx-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.lx-rise { animation: lx-rise 0.9s var(--ease-lux) both; }
+.lx-rise-2 { animation: lx-rise 0.9s var(--ease-lux) 0.12s both; }
+.lx-rise-3 { animation: lx-rise 0.9s var(--ease-lux) 0.24s both; }
+@media (prefers-reduced-motion: reduce) { .lx-rise, .lx-rise-2, .lx-rise-3 { animation: none; } }
+
+@layer components {
+/* ---------- Back-office (inchangé, clair) ---------- */
 .field {
   @apply w-full rounded-md border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition
     placeholder:text-mist/70 focus:border-gold focus:ring-2 focus:ring-gold/20;
@@ -36,3 +87,4 @@ body { background: var(--color-ivory); color: var(--color-ink); }
     transition hover:border-ink/60;
 }
 .eyebrow { @apply text-[11px] font-medium tracking-[0.22em] text-gold-deep uppercase; }
+}

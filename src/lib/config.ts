@@ -5,6 +5,8 @@ export const site = {
   url: (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
   phone: process.env.NEXT_PUBLIC_SALES_PHONE ?? "",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
+  /** Délai de réponse affiché aux clients : ne publier qu'un engagement tenable par l'équipe. */
+  responseTime: process.env.NEXT_PUBLIC_RESPONSE_TIME ?? "dans les meilleurs délais",
 };
 
 export const isProduction = process.env.APP_ENV === "production";

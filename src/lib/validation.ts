@@ -29,6 +29,10 @@ export const leadSchema = z
       .min(6, "Téléphone requis")
       .max(30)
       .regex(/^[+0-9 ().-]+$/, "Téléphone invalide"),
+    cabinBags: z.union([z.literal(""), z.coerce.number().int().min(0).max(40)]).optional()
+      .transform((v) => (v === "" || v === undefined ? undefined : v)),
+    holdBags: z.union([z.literal(""), z.coerce.number().int().min(0).max(40)]).optional()
+      .transform((v) => (v === "" || v === undefined ? undefined : v)),
     comments: optionalText(2000),
     offerId: optionalText(40),
     consentContact: z.literal(true, { error: "Votre accord est nécessaire pour que nous puissions vous recontacter" }),

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   robots: process.env.APP_ENV === "production" ? undefined : { index: false, follow: false },
 };
 
-export const viewport: Viewport = { themeColor: "#0f1a2a", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#07080b", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -6,7 +6,9 @@ import { FlightCard } from "@/components/FlightCard";
 import { LeadForm } from "@/components/LeadForm";
 import { JsonLd } from "@/components/JsonLd";
 import { Faq } from "@/components/Faq";
+import { Photo } from "@/components/Photo";
 import { getRoutePage, routePages } from "@/content/routes";
+import { photoForCity } from "@/content/media";
 import { searchPublic } from "@/connectors/registry";
 import { site } from "@/lib/config";
 
@@ -32,46 +34,48 @@ export default async function RoutePage({ params }: Props) {
 
   return (
     <main>
-      <SiteHeader />
-      <article className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <nav aria-label="Fil d'Ariane" className="text-xs text-mist"><Link href="/">Accueil</Link> / <span>{r.navLabel}</span></nav>
-        <h1 className="font-display mt-4 max-w-3xl text-4xl sm:text-5xl">{r.h1}</h1>
-        <p className="mt-5 max-w-2xl leading-relaxed text-ink-soft">{r.intro}</p>
-        <dl className="mt-8 grid max-w-3xl gap-4 sm:grid-cols-3">
-          {r.facts.map((f) => (
-            <div key={f.label} className="rounded-lg border border-line bg-white p-4"><dt className="label">{f.label}</dt><dd className="font-display text-2xl">{f.value}</dd></div>
-          ))}
-        </dl>
-        <p className="mt-2 text-xs text-mist">Ordres de grandeur, variables selon l&apos;appareil, les vents et les procédures.</p>
+      <section className="relative isolate flex min-h-[78svh] flex-col overflow-hidden">
+        <Photo photo={photoForCity(r.searchTo)} priority sizes="100vw" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-night" />
+        <SiteHeader overlay />
+        <div className="relative mx-auto mt-auto w-full max-w-7xl px-5 pb-14 sm:px-8">
+          <nav aria-label="Fil d'Ariane" className="text-[12px] text-pearl/70"><Link href="/">Accueil</Link> / {r.navLabel}</nav>
+          <h1 className="font-display mt-5 max-w-4xl text-5xl leading-[0.98] font-light sm:text-7xl">{r.h1}</h1>
+          <dl className="mt-10 grid max-w-3xl grid-cols-3 gap-6 border-t border-white/15 pt-6">
+            {r.facts.map((f) => (<div key={f.label}><dt className="lx-label mb-1">{f.label}</dt><dd className="font-display text-2xl font-light sm:text-3xl">{f.value}</dd></div>))}
+          </dl>
+        </div>
+      </section>
 
-        <section className="mt-14">
-          <h2 className="font-display text-3xl">Empty Legs {r.from.city} – {r.to.city} à venir</h2>
+      <article className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
+        <p className="max-w-3xl text-xl leading-relaxed text-pearl/85">{r.intro}</p>
+        <p className="mt-3 text-[11px] text-ash">Durées et distances : ordres de grandeur, variables selon l&apos;appareil et les conditions de vol.</p>
+
+        <section className="mt-16">
+          <h2 className="font-display text-4xl font-light">Vols {r.from.city} – {r.to.city} à venir</h2>
           {legs.length ? (
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{legs.slice(0, 6).map((l) => <FlightCard key={l.key} leg={l} />)}</div>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{legs.slice(0, 6).map((l) => <FlightCard key={l.key} leg={l} />)}</div>
           ) : (
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-              Aucun vol n&apos;est publié sur cette route en ce moment. Les Empty Legs apparaissent souvent quelques jours
-              seulement avant le départ : déposez votre demande ci-dessous, nous vous recontactons dès qu&apos;une option se présente.
-            </p>
+            <p className="mt-4 max-w-2xl leading-relaxed text-smoke">Aucun vol publié en ce moment sur cette route. Les Empty Legs apparaissent souvent quelques jours seulement avant le départ : laissez votre demande ci-dessous.</p>
           )}
         </section>
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-10">
+        <div className="mt-20 grid gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-12">
             {r.sections.map((s) => (
-              <section key={s.h2}><h2 className="font-display text-3xl">{s.h2}</h2><p className="mt-3 leading-relaxed text-ink-soft">{s.body}</p></section>
+              <section key={s.h2}><h2 className="font-display text-4xl font-light">{s.h2}</h2><p className="mt-4 leading-relaxed text-smoke">{s.body}</p></section>
             ))}
             <section>
-              <h2 className="font-display text-3xl">Aéroports desservis</h2>
-              <div className="mt-4 grid gap-6 sm:grid-cols-2 text-sm">
-                <div><h3 className="font-medium">{r.from.city}</h3><ul className="mt-2 space-y-1 text-ink-soft">{r.from.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
-                <div><h3 className="font-medium">{r.to.city}</h3><ul className="mt-2 space-y-1 text-ink-soft">{r.to.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
+              <h2 className="font-display text-4xl font-light">Aéroports</h2>
+              <div className="mt-6 grid gap-8 text-[15px] sm:grid-cols-2">
+                <div><h3 className="lx-label">{r.from.city}</h3><ul className="space-y-2 text-smoke">{r.from.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
+                <div><h3 className="lx-label">{r.to.city}</h3><ul className="space-y-2 text-smoke">{r.to.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
               </div>
             </section>
           </div>
-          <aside id="demande" className="h-fit rounded-lg border border-line bg-white p-5 sm:p-8">
-            <h2 className="font-display text-3xl">Demande {r.from.city} – {r.to.city}</h2>
-            <div className="mt-6"><LeadForm prefill={{ departure: r.searchFrom, arrival: r.searchTo }} /></div>
+          <aside id="demande" className="lx-card h-fit p-6 sm:p-9">
+            <h2 className="font-display mb-8 text-3xl font-light">Demande {r.from.city} – {r.to.city}</h2>
+            <LeadForm prefill={{ departure: r.searchFrom, arrival: r.searchTo }} />
           </aside>
         </div>
       </article>

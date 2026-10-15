@@ -1,22 +1,22 @@
 const steps = [
-  { t: "Votre demande", d: "Trajet, dates, passagers. Deux minutes, sans engagement." },
-  { t: "Vérification", d: "Nous interrogeons les opérateurs pour confirmer la disponibilité réelle et le prix." },
-  { t: "Proposition écrite", d: "Opérateur, appareil, horaires, prix total et conditions : tout est indiqué avant que vous décidiez." },
-  { t: "Confirmation", d: "La réservation devient définitive après votre accord et la confirmation écrite de l'opérateur." },
+  { t: "Choisissez", d: "Un Empty Leg affiché, ou décrivez le vol que vous souhaitez." },
+  { t: "Nous vérifions", d: "Disponibilité réelle et prix confirmés directement auprès de l'opérateur." },
+  { t: "Vous décidez", d: "Proposition écrite : opérateur, appareil, prix total, conditions. Vous payez seulement si vous acceptez." },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="fonctionnement" className="border-y border-line bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <p className="eyebrow">Fonctionnement</p>
-        <h2 className="font-display mt-3 max-w-xl text-4xl">De la demande au décollage, quatre étapes claires</h2>
-        <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <section id="fonctionnement" className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+      <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p className="lx-eyebrow">Comment ça marche</p>
+          <h2 className="font-display mt-5 text-5xl leading-[1.02] font-light sm:text-6xl">Trois étapes.<br /><em className="text-champagne">Aucune surprise.</em></h2>
+        </div>
+        <ol className="divide-y divide-white/10 border-y hairline">
           {steps.map((s, i) => (
-            <li key={s.t}>
-              <span className="font-display text-5xl text-gold/70">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-3 text-lg font-medium">{s.t}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">{s.d}</p>
+            <li key={s.t} className="grid grid-cols-[3rem_1fr] gap-4 py-7">
+              <span className="font-display text-3xl font-light text-champagne">{String(i + 1).padStart(2, "0")}</span>
+              <div><h3 className="text-xl text-pearl">{s.t}</h3><p className="mt-2 max-w-md text-[15px] leading-relaxed text-smoke">{s.d}</p></div>
             </li>
           ))}
         </ol>

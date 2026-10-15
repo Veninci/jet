@@ -10,13 +10,12 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Empty Legs disponibles : vols en jet privé à prix réduit",
-  description: "Consultez les Empty Legs en jet privé à venir et demandez le vol qui vous intéresse. Disponibilité vérifiée par un conseiller.",
+  description: "Consultez les Empty Legs en jet privé à venir et réservez le vol qui vous intéresse. Disponibilité confirmée par un conseiller.",
   alternates: { canonical: "/vols" },
 };
 
 type SP = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)?.trim() || undefined;
-
 const CATEGORIES = ["Very light jet", "Light jet", "Midsize jet", "Super midsize jet", "Heavy jet", "Turbopropulseur"];
 
 export default async function FlightsPage({ searchParams }: { searchParams: Promise<SP> }) {
@@ -44,61 +43,58 @@ export default async function FlightsPage({ searchParams }: { searchParams: Prom
     p.set("view", v);
     return `?${p.toString()}`;
   };
+  const filter = "w-full rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-[14px] text-pearl outline-none placeholder:text-ash focus:border-champagne/60 [color-scheme:dark]";
 
   return (
     <main>
       <SiteHeader />
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-6 sm:px-6">
-        <p className="eyebrow">Catalogue</p>
-        <h1 className="font-display mt-3 text-4xl sm:text-5xl">Empty Legs en jet privé</h1>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          Les vols affichés sont des opportunités dont la disponibilité doit être confirmée auprès de l&apos;opérateur. Les
-          horaires et itinéraires d&apos;un Empty Leg peuvent changer : demander un vol ne vaut pas réservation.
+      <section className="mx-auto max-w-7xl px-5 pt-14 pb-8 sm:px-8">
+        <p className="lx-eyebrow">Catalogue</p>
+        <h1 className="font-display mt-4 text-5xl font-light sm:text-7xl">Empty Legs</h1>
+        <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-smoke">
+          Des jets privés qui doivent se repositionner, proposés à prix réduit. Chaque vol est confirmé auprès de
+          l&apos;opérateur avant réservation : horaires et itinéraires peuvent évoluer.
         </p>
 
-        <form method="get" className="mt-8 grid gap-3 rounded-lg border border-line bg-white p-4 sm:grid-cols-3 lg:grid-cols-7">
-          <input name="from" defaultValue={from} placeholder="Départ" aria-label="Départ" className="field lg:col-span-1" />
-          <input name="to" defaultValue={to} placeholder="Arrivée" aria-label="Arrivée" className="field" />
-          <input name="date" type="date" defaultValue={date} aria-label="Date (± 3 jours)" className="field" />
-          <input name="pax" type="number" min={1} max={19} defaultValue={pax} placeholder="Passagers" aria-label="Passagers" className="field" />
-          <input name="budget" type="number" min={0} step={500} defaultValue={budget} placeholder="Budget max €" aria-label="Budget maximum" className="field" />
-          <select name="cat" defaultValue={category ?? ""} aria-label="Catégorie d'appareil" className="field">
-            <option value="">Tous appareils</option>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+        <form method="get" className="mt-10 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-[1fr_1fr_0.9fr_0.7fr_0.8fr_1fr_auto]">
+          <input name="from" defaultValue={from} placeholder="Départ" aria-label="Départ" className={filter} />
+          <input name="to" defaultValue={to} placeholder="Destination" aria-label="Destination" className={filter} />
+          <input name="date" type="date" defaultValue={date} aria-label="Date (± 3 jours)" className={filter} />
+          <input name="pax" type="number" min={1} max={19} defaultValue={pax} placeholder="Pax" aria-label="Passagers" className={filter} />
+          <input name="budget" type="number" min={0} step={500} defaultValue={budget} placeholder="Budget max" aria-label="Budget maximum (€)" className={filter} />
+          <select name="cat" defaultValue={category ?? ""} aria-label="Catégorie d'appareil" className={filter}>
+            <option value="" className="bg-night">Tous appareils</option>
+            {CATEGORIES.map((c) => <option key={c} value={c} className="bg-night">{c}</option>)}
           </select>
           <input type="hidden" name="view" value={view} />
-          <button className="btn-primary">Filtrer</button>
+          <button className="lx-btn col-span-2 py-2.5 sm:col-span-3 lg:col-span-1">Filtrer</button>
         </form>
       </section>
 
-      <section id="resultats" className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+      <section id="resultats" className="mx-auto max-w-7xl scroll-mt-24 px-5 pb-24 sm:px-8">
         {hasDemo && <DemoBanner />}
-        <div className="mb-5 flex items-center justify-between text-sm">
-          <p className="text-ink-soft">{legs.length} vol{legs.length > 1 ? "s" : ""} {date ? "autour de la date choisie (± 3 jours)" : "dans les 60 prochains jours"}</p>
-          <div className="flex gap-1 rounded-md border border-line bg-white p-1" aria-label="Affichage">
-            <Link href={qs("cards")} aria-current={view === "cards"} className={`rounded px-3 py-1 ${view === "cards" ? "bg-ink text-ivory" : ""}`}>Cartes</Link>
-            <Link href={qs("list")} aria-current={view === "list"} className={`rounded px-3 py-1 ${view === "list" ? "bg-ink text-ivory" : ""}`}>Liste</Link>
+        <div className="mb-6 flex items-center justify-between text-[13px]">
+          <p className="text-smoke">{legs.length} vol{legs.length > 1 ? "s" : ""} {date ? "autour de votre date (± 3 jours)" : "dans les 60 prochains jours"}</p>
+          <div className="flex gap-1 rounded-full border border-white/10 p-1" aria-label="Affichage">
+            <Link href={qs("cards")} aria-current={view === "cards"} className={`rounded-full px-4 py-1.5 transition ${view === "cards" ? "bg-pearl text-night" : "text-smoke"}`}>Cartes</Link>
+            <Link href={qs("list")} aria-current={view === "list"} className={`rounded-full px-4 py-1.5 transition ${view === "list" ? "bg-pearl text-night" : "text-smoke"}`}>Liste</Link>
           </div>
         </div>
 
-        {legs.length > 0 ? (
-          view === "cards" ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{legs.map((l) => <FlightCard key={l.key} leg={l} />)}</div>
-          ) : (
-            <ul className="rounded-lg border border-line bg-white px-4">{legs.map((l) => <FlightRow key={l.key} leg={l} />)}</ul>
-          )
-        ) : null}
-
-        {[...new Set(legs.map((l) => l.attribution).filter(Boolean))].map((a) => (
-          <p key={a} className="mt-4 text-xs text-mist">{a}</p>
+        {legs.length > 0 && (view === "cards" ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{legs.map((l, i) => <FlightCard key={l.key} leg={l} priority={i < 3} />)}</div>
+        ) : (
+          <ul className="lx-card px-5">{legs.map((l) => <FlightRow key={l.key} leg={l} />)}</ul>
         ))}
 
-        <div className="mt-14 grid gap-10 rounded-lg border border-line bg-white p-5 sm:p-8 lg:grid-cols-[0.7fr_1.3fr]">
+        {[...new Set(legs.map((l) => l.attribution).filter(Boolean))].map((a) => <p key={a} className="mt-4 text-[11px] text-ash">{a}</p>)}
+
+        <div className="lx-card mt-16 grid gap-10 p-6 sm:p-10 lg:grid-cols-[0.7fr_1.3fr]">
           <div>
-            <h2 className="font-display text-3xl">{legs.length ? "Aucun vol ne convient ?" : "Aucun Empty Leg affiché pour ce trajet"}</h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-              Beaucoup d&apos;Empty Legs ne sont jamais publiés en ligne ou le sont au dernier moment. Transmettez-nous votre
-              besoin : nous interrogeons directement les opérateurs, y compris sur les aéroports proches.
+            <h2 className="font-display text-4xl font-light">{legs.length ? "Rien ne correspond ?" : "Aucun vol affiché sur ce trajet"}</h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-smoke">
+              Beaucoup d&apos;Empty Legs ne sont jamais publiés en ligne. Décrivez votre vol : nous interrogeons directement les
+              opérateurs, y compris sur les aéroports proches.
             </p>
           </div>
           <LeadForm prefill={{ departure: from, arrival: to, departureDate: date, passengers: pax }} />

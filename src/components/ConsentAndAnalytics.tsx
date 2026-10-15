@@ -70,24 +70,24 @@ export function ConsentAndAnalytics() {
       )}
       {open && (
         <div role="dialog" aria-live="polite" aria-label="Gestion des cookies"
-          className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 p-4 shadow-[0_-8px_30px_rgba(15,26,42,0.08)] backdrop-blur sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md sm:rounded-lg sm:border">
-          <p className="text-sm leading-relaxed text-ink-soft">
+          className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-night-3/95 p-5 text-pearl shadow-2xl shadow-black/60 backdrop-blur-xl sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md sm:rounded-2xl sm:border">
+          <p className="text-[13px] leading-relaxed text-smoke">
             Nous utilisons des cookies de mesure d&apos;audience et publicitaires uniquement avec votre accord, pour
             comprendre l&apos;usage du site et mesurer nos campagnes.{" "}
             <Link href="/cookies" className="underline">En savoir plus</Link>
           </p>
           {custom && (
-            <div className="mt-3 space-y-2 text-sm">
+            <div className="mt-3 space-y-2 text-[13px] text-smoke">
               <label className="flex items-center gap-2"><input type="checkbox" checked disabled /> Nécessaires (toujours actifs)</label>
               <label className="flex items-center gap-2"><input type="checkbox" checked={draft.analytics} onChange={(e) => setDraft({ ...draft, analytics: e.target.checked })} /> Mesure d&apos;audience (Google Analytics)</label>
               <label className="flex items-center gap-2"><input type="checkbox" checked={draft.ads} onChange={(e) => setDraft({ ...draft, ads: e.target.checked })} /> Publicité (Google Ads)</label>
             </div>
           )}
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <button className="btn-ghost" onClick={() => save({ analytics: false, ads: false })}>Tout refuser</button>
-            <button className="btn-primary" onClick={() => save({ analytics: true, ads: true })}>Tout accepter</button>
+            <button className="lx-btn-ghost px-3" onClick={() => save({ analytics: false, ads: false })}>Tout refuser</button>
+            <button className="lx-btn px-3" onClick={() => save({ analytics: true, ads: true })}>Tout accepter</button>
           </div>
-          <button className="mt-2 w-full text-xs text-mist underline" onClick={() => (custom ? save(draft) : setCustom(true))}>
+          <button className="mt-3 w-full text-xs text-smoke underline underline-offset-4" onClick={() => (custom ? save(draft) : setCustom(true))}>
             {custom ? "Enregistrer mes choix" : "Personnaliser"}
           </button>
         </div>
@@ -98,7 +98,7 @@ export function ConsentAndAnalytics() {
 
 export function ConsentLink() {
   return (
-    <button type="button" className="hover:text-ivory" onClick={() => window.dispatchEvent(new Event("open-consent"))}>
+    <button type="button" className="transition hover:text-pearl" onClick={() => window.dispatchEvent(new Event("open-consent"))}>
       Gérer les cookies
     </button>
   );

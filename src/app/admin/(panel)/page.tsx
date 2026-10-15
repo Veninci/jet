@@ -68,7 +68,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
               <tr key={l.id} className="border-b border-line/60 hover:bg-ivory">
                 <td className="p-3 font-mono text-xs"><Link className="underline" href={`/admin/demandes/${l.id}`}>{l.reference}</Link></td>
                 <td className="p-3">{l.firstName} {l.lastName}<div className="text-xs text-mist">{l.phone}</div></td>
-                <td className="p-3">{l.departure} → {l.arrival}{l.offerId && <div className="text-xs text-gold-deep">depuis une fiche vol</div>}</td>
+                <td className="p-3">{l.departure} → {l.arrival}{l.offerId && <div className="text-xs text-gold-deep">depuis une fiche vol</div>}{l.channel === "mobile" && <div className="text-xs text-indigo-700">app mobile</div>}</td>
                 <td className="p-3">{formatDate(l.departureDate)}{l.flexibilityDays ? ` ±${l.flexibilityDays}j` : ""}</td>
                 <td className="p-3">{l.passengers} pax<div className="text-xs text-mist">{l.budget ? `${l.budget.toLocaleString("fr-FR")} €` : "—"}</div></td>
                 <td className="p-3"><span className={`rounded-full px-2 py-1 text-xs ${statusTone(l.status)}`}>{statusLabel(l.status)}</span>

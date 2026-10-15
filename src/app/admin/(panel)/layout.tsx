@@ -16,7 +16,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
       : []),
   ];
   return (
-    <div className="min-h-dvh bg-[#f4f2ee]">
+    <div className="min-h-dvh bg-[#f4f2ee] text-ink">
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 text-sm">
           <span className="font-display text-xl">Admin</span>

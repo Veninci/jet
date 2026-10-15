@@ -5,7 +5,7 @@ import { login } from "../actions";
 export default function LoginPage() {
   const [state, action, pending] = useActionState(login, null);
   return (
-    <main className="flex min-h-dvh items-center justify-center px-4">
+    <main className="flex min-h-dvh items-center justify-center bg-[#f4f2ee] px-4 text-ink">
       <form action={action} className="w-full max-w-sm space-y-4 rounded-lg border border-line bg-white p-8">
         <h1 className="font-display text-3xl">Administration</h1>
         <div><label className="label" htmlFor="email">E-mail</label><input id="email" name="email" type="email" autoComplete="username" className="field" required /></div>

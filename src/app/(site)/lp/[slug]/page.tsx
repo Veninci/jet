@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/SiteHeader";
 import { LeadForm } from "@/components/LeadForm";
 import { HowItWorks } from "@/components/HowItWorks";
+import { Photo } from "@/components/Photo";
 import { getLanding, landings } from "@/content/landings";
+import { media } from "@/content/media";
 
 export function generateStaticParams() {
   return landings.map((l) => ({ slug: l.slug }));
@@ -21,18 +23,22 @@ export default async function LandingPage({ params }: Props) {
   if (!l) notFound();
   return (
     <main>
-      <SiteHeader />
-      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 sm:py-16 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <h1 className="font-display text-4xl leading-tight sm:text-5xl">{l.headline}</h1>
-          <p className="mt-4 leading-relaxed text-ink-soft">{l.sub}</p>
-          <ul className="mt-6 space-y-2 text-sm text-ink-soft">
-            <li>✓ Opérateurs titulaires d&apos;un certificat de transporteur aérien</li>
-            <li>✓ Prix total et conditions annoncés avant engagement</li>
-            <li>✓ Demande gratuite, sans paiement</li>
-          </ul>
+      <section className="relative isolate overflow-hidden">
+        <Photo photo={media.heroJet} priority sizes="100vw" />
+        <div className="absolute inset-0 bg-gradient-to-r from-night via-night/85 to-night/40" />
+        <SiteHeader overlay />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pt-32 pb-16 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:pb-24">
+          <div className="lg:pt-10">
+            <h1 className="font-display text-5xl leading-[1] font-light sm:text-6xl">{l.headline}</h1>
+            <p className="mt-5 max-w-md text-[17px] leading-relaxed text-pearl/80">{l.sub}</p>
+            <ul className="mt-8 space-y-3 text-[15px] text-pearl/85">
+              {["Opérateurs certifiés (CTA)", "Prix total écrit avant engagement", "Demande gratuite, sans paiement"].map((t) => (
+                <li key={t} className="flex items-center gap-3"><span className="text-champagne">✓</span>{t}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="lx-card bg-night-2/90 p-6 backdrop-blur-xl sm:p-9"><LeadForm prefill={l.prefill} /></div>
         </div>
-        <div className="rounded-lg border border-line bg-white p-5 sm:p-8"><LeadForm prefill={l.prefill} /></div>
       </section>
       <HowItWorks />
     </main>

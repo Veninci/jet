@@ -45,6 +45,7 @@ export default async function LeadDetail({ params, searchParams }: Props) {
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <h1 className="font-display text-3xl">{lead.firstName} {lead.lastName}</h1>
         <span className="font-mono text-sm text-mist">{lead.reference}</span>
+        <span className="rounded-full bg-stone-200 px-2 py-1 text-xs">{lead.channel === "mobile" ? "App mobile" : "Site web"}</span>
         <span className={`rounded-full px-2 py-1 text-xs ${statusTone(lead.status)}`}>{statusLabel(lead.status)}</span>
       </div>
       {error === "confirm" && <p role="alert" className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-800">Impossible de passer en « Réservation confirmée » : il faut une proposition acceptée par le client ET confirmée par écrit par l&apos;opérateur.</p>}
@@ -57,7 +58,7 @@ export default async function LeadDetail({ params, searchParams }: Props) {
             <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
               <div><dt className="text-xs text-mist">Trajet</dt><dd>{lead.departure} → {lead.arrival} ({lead.tripType === "ROUND_TRIP" ? "aller-retour" : "aller simple"})</dd></div>
               <div><dt className="text-xs text-mist">Dates</dt><dd>{formatDate(lead.departureDate)}{lead.returnDate ? ` → ${formatDate(lead.returnDate)}` : ""} · flex ±{lead.flexibilityDays} j</dd></div>
-              <div><dt className="text-xs text-mist">Passagers</dt><dd>{lead.passengers}</dd></div>
+              <div><dt className="text-xs text-mist">Passagers / bagages</dt><dd>{lead.passengers} pax{lead.cabinBags != null || lead.holdBags != null ? ` · ${lead.cabinBags ?? 0} cabine · ${lead.holdBags ?? 0} soute` : ""}</dd></div>
               <div><dt className="text-xs text-mist">Budget</dt><dd>{lead.budget ? formatMoney(lead.budget) : "Non précisé"}</dd></div>
               <div><dt className="text-xs text-mist">E-mail</dt><dd><a className="underline" href={`mailto:${lead.email}`}>{lead.email}</a></dd></div>
               <div><dt className="text-xs text-mist">Téléphone</dt><dd><a className="underline" href={`tel:${lead.phone.replace(/\s/g, "")}`}>{lead.phone}</a></dd></div>
