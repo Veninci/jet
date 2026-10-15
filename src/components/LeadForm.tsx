@@ -63,45 +63,45 @@ export function LeadForm({ prefill = {} }: { prefill?: LeadPrefill }) {
       <Steps step={step} labels={["Votre vol", "Vos coordonnées"]} />
 
       <div className={step === 0 ? "space-y-6" : "hidden"}>
-        <div className="inline-flex rounded-full border border-white/10 bg-white/[0.03] p-1 text-[13px]" role="radiogroup" aria-label="Type de vol">
+        <div className="inline-flex rounded-full border border-pebble bg-white p-1 text-[13px]" role="radiogroup" aria-label="Type de vol">
           {(["ONE_WAY", "ROUND_TRIP"] as const).map((t) => (
             <button key={t} type="button" role="radio" aria-checked={tripType === t} onClick={() => setTripType(t)}
-              className={`rounded-full px-5 py-2 transition ${tripType === t ? "bg-pearl text-night" : "text-smoke hover:text-pearl"}`}>
+              className={`rounded-full px-5 py-2 transition ${tripType === t ? "bg-ink text-white" : "text-ash hover:text-ink"}`}>
               {t === "ONE_WAY" ? "Aller simple" : "Aller-retour"}
             </button>
           ))}
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field id="departure" label="Départ" error={errors.departure}><input id="departure" name="departure" className="lx-field" placeholder="Paris, Le Bourget…" defaultValue={prefill.departure} autoComplete="off" {...aria(errors, "departure")} /></Field>
-          <Field id="arrival" label="Destination" error={errors.arrival}><input id="arrival" name="arrival" className="lx-field" placeholder="Nice, Genève, Ibiza…" defaultValue={prefill.arrival} autoComplete="off" {...aria(errors, "arrival")} /></Field>
-          <Field id="departureDate" label="Date de départ" error={errors.departureDate}><input id="departureDate" name="departureDate" type="date" min={today()} className="lx-field" defaultValue={prefill.departureDate} {...aria(errors, "departureDate")} /></Field>
+          <Field id="departure" label="Départ" error={errors.departure}><input id="departure" name="departure" className="in-field" placeholder="Paris, Le Bourget…" defaultValue={prefill.departure} autoComplete="off" {...aria(errors, "departure")} /></Field>
+          <Field id="arrival" label="Destination" error={errors.arrival}><input id="arrival" name="arrival" className="in-field" placeholder="Nice, Genève, Ibiza…" defaultValue={prefill.arrival} autoComplete="off" {...aria(errors, "arrival")} /></Field>
+          <Field id="departureDate" label="Date de départ" error={errors.departureDate}><input id="departureDate" name="departureDate" type="date" min={today()} className="in-field" defaultValue={prefill.departureDate} {...aria(errors, "departureDate")} /></Field>
           {tripType === "ROUND_TRIP" ? (
-            <Field id="returnDate" label="Date de retour" error={errors.returnDate}><input id="returnDate" name="returnDate" type="date" min={today()} className="lx-field" {...aria(errors, "returnDate")} /></Field>
+            <Field id="returnDate" label="Date de retour" error={errors.returnDate}><input id="returnDate" name="returnDate" type="date" min={today()} className="in-field" {...aria(errors, "returnDate")} /></Field>
           ) : (
             <Field id="flexibilityDays" label="Flexibilité">
-              <select id="flexibilityDays" name="flexibilityDays" className="lx-field" defaultValue="1">
+              <select id="flexibilityDays" name="flexibilityDays" className="in-field" defaultValue="1">
                 <option value="0">Date exacte</option><option value="1">± 1 jour</option><option value="2">± 2 jours</option><option value="3">± 3 jours</option><option value="7">± 1 semaine</option>
               </select>
             </Field>
           )}
-          <div className="rounded-xl border border-white/10 px-4 sm:col-span-1">
+          <div className="rounded-full border border-pebble px-5 sm:col-span-1">
             <Counter name="passengers" label="Passagers" value={pax} onChange={setPax} min={1} max={19} />
           </div>
-          <Field id="budget" label="Budget" hint="facultatif" error={errors.budget}><input id="budget" name="budget" type="number" inputMode="numeric" min={0} step={500} className="lx-field" placeholder="ex. 6 000 €" {...aria(errors, "budget")} /></Field>
+          <Field id="budget" label="Budget" hint="facultatif" error={errors.budget}><input id="budget" name="budget" type="number" inputMode="numeric" min={0} step={500} className="in-field" placeholder="ex. 6 000 €" {...aria(errors, "budget")} /></Field>
           {tripType === "ROUND_TRIP" && <input type="hidden" name="flexibilityDays" value="1" />}
           <div className="sm:col-span-2">
-            <Field id="comments" label="Précisions" hint="facultatif"><textarea id="comments" name="comments" rows={2} className="lx-field" placeholder="Horaires, bagages volumineux, animal…" /></Field>
+            <Field id="comments" label="Précisions" hint="facultatif"><textarea id="comments" name="comments" rows={2} className="in-field" placeholder="Horaires, bagages volumineux, animal…" /></Field>
           </div>
         </div>
       </div>
 
       <div className={step === 1 ? "" : "hidden"}><ContactFields errors={errors} /></div>
 
-      {errors._ && <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-200">{errors._}</p>}
+      {errors._ && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-800">{errors._}</p>}
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {step === 1 ? <button type="button" onClick={() => setStep(0)} className="text-[13px] text-smoke underline underline-offset-4">← Modifier le vol</button> : <span className="text-[12px] text-ash">Gratuit, sans engagement, sans paiement.</span>}
-        <button type="submit" className="lx-btn w-full sm:w-auto" disabled={sending}>{step === 0 ? "Continuer" : sending ? "Envoi…" : "Envoyer ma demande"}</button>
+        {step === 1 ? <button type="button" onClick={() => setStep(0)} className="text-[13px] text-ash underline underline-offset-4">← Modifier le vol</button> : <span className="text-[12px] text-ash">Gratuit, sans engagement, sans paiement.</span>}
+        <button type="submit" className="pill w-full sm:w-auto" disabled={sending}>{step === 0 ? "Continuer" : sending ? "Envoi…" : "Envoyer ma demande"}</button>
       </div>
     </form>
   );

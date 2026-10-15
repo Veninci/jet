@@ -7,6 +7,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { JsonLd } from "@/components/JsonLd";
 import { Faq } from "@/components/Faq";
 import { Photo } from "@/components/Photo";
+import { Split } from "@/components/motion/Split";
 import { getRoutePage, routePages } from "@/content/routes";
 import { photoForCity } from "@/content/media";
 import { searchPublic } from "@/connectors/registry";
@@ -34,51 +35,60 @@ export default async function RoutePage({ params }: Props) {
 
   return (
     <main>
-      <section className="relative isolate flex min-h-[78svh] flex-col overflow-hidden">
-        <Photo photo={photoForCity(r.searchTo)} priority sizes="100vw" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-night" />
-        <SiteHeader overlay />
-        <div className="relative mx-auto mt-auto w-full max-w-7xl px-5 pb-14 sm:px-8">
-          <nav aria-label="Fil d'Ariane" className="text-[12px] text-pearl/70"><Link href="/">Accueil</Link> / {r.navLabel}</nav>
-          <h1 className="font-display mt-5 max-w-4xl text-5xl leading-[0.98] font-light sm:text-7xl">{r.h1}</h1>
-          <dl className="mt-10 grid max-w-3xl grid-cols-3 gap-6 border-t border-white/15 pt-6">
-            {r.facts.map((f) => (<div key={f.label}><dt className="lx-label mb-1">{f.label}</dt><dd className="font-display text-2xl font-light sm:text-3xl">{f.value}</dd></div>))}
+      <SiteHeader />
+      <section className="sky pt-36 pb-14">
+        <div className="wrap">
+          <nav aria-label="Fil d'Ariane" className="text-[15px] text-ink/60"><Link href="/" className="hover:underline">Accueil</Link> / {r.navLabel}</nav>
+          <Split as="h1" className="t-display mt-6 max-w-5xl text-[44px] sm:text-[80px]" text={r.h1} />
+          <dl data-reveal-group="" className="mt-12 grid max-w-3xl grid-cols-3 gap-6">
+            {r.facts.map((f) => (
+              <div key={f.label} data-reveal-item="" className="border-t border-ink/20 pt-4"><dt className="text-[15px] text-ink/60">{f.label}</dt><dd className="t-heading mt-2 text-[23px] sm:text-[30px]">{f.value}</dd></div>
+            ))}
           </dl>
         </div>
       </section>
+      <div className="wrap">
+        <div data-clip="" className="relative aspect-[16/9] overflow-hidden sm:aspect-[21/9]"><Photo photo={photoForCity(r.searchTo)} priority sizes="100vw" /></div>
+        <p className="mt-3 text-[13px] text-ash">Durées et distances : ordres de grandeur, variables selon l&apos;appareil et les conditions de vol.</p>
+      </div>
 
-      <article className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
-        <p className="max-w-3xl text-xl leading-relaxed text-pearl/85">{r.intro}</p>
-        <p className="mt-3 text-[11px] text-ash">Durées et distances : ordres de grandeur, variables selon l&apos;appareil et les conditions de vol.</p>
+      <article className="wrap py-20">
+        <p data-reveal="" className="t-heading max-w-4xl text-[30px] leading-[1.25] sm:text-[37px]">{r.intro}</p>
 
-        <section className="mt-16">
-          <h2 className="font-display text-4xl font-light">Vols {r.from.city} – {r.to.city} à venir</h2>
+        <section className="mt-24">
+          <Split as="h2" className="t-display text-[44px] sm:text-[52px]" text={`Vols ${r.from.city} – ${r.to.city}\nà venir.`} />
           {legs.length ? (
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{legs.slice(0, 6).map((l) => <FlightCard key={l.key} leg={l} />)}</div>
+            <div data-reveal-group="" className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+              {legs.slice(0, 6).map((l) => <div key={l.key} data-reveal-item=""><FlightCard leg={l} /></div>)}
+            </div>
           ) : (
-            <p className="mt-4 max-w-2xl leading-relaxed text-smoke">Aucun vol publié en ce moment sur cette route. Les Empty Legs apparaissent souvent quelques jours seulement avant le départ : laissez votre demande ci-dessous.</p>
+            <p className="t-body mt-6 max-w-2xl text-ash">Aucun vol publié en ce moment sur cette route. Les Empty Legs apparaissent souvent quelques jours seulement avant le départ : laissez votre demande ci-dessous.</p>
           )}
         </section>
 
-        <div className="mt-20 grid gap-14 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-12">
-            {r.sections.map((s) => (
-              <section key={s.h2}><h2 className="font-display text-4xl font-light">{s.h2}</h2><p className="mt-4 leading-relaxed text-smoke">{s.body}</p></section>
-            ))}
-            <section>
-              <h2 className="font-display text-4xl font-light">Aéroports</h2>
-              <div className="mt-6 grid gap-8 text-[15px] sm:grid-cols-2">
-                <div><h3 className="lx-label">{r.from.city}</h3><ul className="space-y-2 text-smoke">{r.from.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
-                <div><h3 className="lx-label">{r.to.city}</h3><ul className="space-y-2 text-smoke">{r.to.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
-              </div>
+        <div className="mt-24 grid gap-16 lg:grid-cols-2">
+          {r.sections.map((s) => (
+            <section key={s.h2} data-reveal="" className="border-t hair pt-6">
+              <h2 className="t-heading text-[30px]">{s.h2}</h2>
+              <p className="t-body mt-4 text-ash">{s.body}</p>
             </section>
-          </div>
-          <aside id="demande" className="lx-card h-fit p-6 sm:p-9">
-            <h2 className="font-display mb-8 text-3xl font-light">Demande {r.from.city} – {r.to.city}</h2>
-            <LeadForm prefill={{ departure: r.searchFrom, arrival: r.searchTo }} />
-          </aside>
+          ))}
+          <section data-reveal="" className="border-t hair pt-6">
+            <h2 className="t-heading text-[30px]">Aéroports</h2>
+            <div className="mt-4 grid gap-8 sm:grid-cols-2">
+              <div><h3 className="text-[15px] text-ash">{r.from.city}</h3><ul className="t-body mt-2">{r.from.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
+              <div><h3 className="text-[15px] text-ash">{r.to.city}</h3><ul className="t-body mt-2">{r.to.airports.map((a) => <li key={a}>{a}</li>)}</ul></div>
+            </div>
+          </section>
         </div>
       </article>
+
+      <section id="demande" className="bg-deck py-24 text-white">
+        <div className="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <Split as="h2" className="t-display text-[44px] sm:text-[52px]" text={`${r.from.city} – ${r.to.city},\nsur demande.`} />
+          <div className="bg-white p-6 text-ink sm:p-10"><LeadForm prefill={{ departure: r.searchFrom, arrival: r.searchTo }} /></div>
+        </div>
+      </section>
       <Faq />
       <JsonLd data={{
         "@context": "https://schema.org",

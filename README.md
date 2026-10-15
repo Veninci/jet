@@ -5,6 +5,17 @@ Nom de marque provisoire : **Aelys** (variable `NEXT_PUBLIC_SITE_NAME`) — à v
 
 ## Stack
 Next.js 16 (App Router, TypeScript) · PostgreSQL + Prisma 6 · Tailwind CSS 4 · Zod · sessions JWT signées (jose) + bcrypt · Resend (HTTP) pour les e-mails · Vitest.
+Animation : GSAP 3.15 + ScrollTrigger (licence « Standard no charge », usage commercial gratuit), Lenis (MIT), Three.js r186 (MIT), police Inter Tight (OFL).
+
+## Direction artistique et animations
+- Style : ciel d'aube, encre `#000d10`, pilules, une seule carte argile `#bc7155` par page (référence « Hyer Aviation » fournie).
+- Hero : jet d'affaires 3D modélisé en code (`src/components/jet/`), qui entre en vol puis s'éloigne au scroll pendant que le logotype monte et que le ciel passe au crépuscule.
+- Section « verre » : moteur du skill *Premium 3D Glass* fourni par le client, porté dans `src/components/glass/engine.js`
+  (cœur inchangé ; adaptations listées en tête du fichier). Silhouette du jet : `public/glass/jet.svg`, validée par l'outil du skill (0 croisement).
+  **À vérifier : les droits d'utilisation commerciale du code de ce moteur** (l'archive ne contient pas de licence pour lui, seulement pour Three.js et Space Grotesk).
+- Animations déclaratives par attributs : `data-reveal`, `data-reveal-group`/`data-reveal-item`, `data-split`, `data-scrub-words`, `data-clip`, `data-parallax`, `data-grow` (`src/components/motion/MotionRoot.tsx`).
+- Accessibilité : tout est désactivé si l'utilisateur a demandé à réduire les animations (le verre s'affiche alors à plat) ; le contenu reste dans le HTML pour le SEO.
+- Les pages Google Ads (`/lp/*`) n'ont volontairement aucune 3D, pour un affichage immédiat.
 
 ## Démarrer
 ```bash

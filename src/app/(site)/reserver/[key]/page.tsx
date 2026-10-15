@@ -14,7 +14,7 @@ export default async function BookPage({ params }: { params: Promise<{ key: stri
   return (
     <main>
       <SiteHeader />
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16"><BookingFlow flight={toFlightDTO(leg)} /></div>
+      <div className="wrap pt-32 pb-24"><BookingFlow flight={toFlightDTO(leg)} /></div>
     </main>
   );
 }

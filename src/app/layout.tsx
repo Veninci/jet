@@ -13,11 +13,16 @@ export const metadata: Metadata = {
   robots: process.env.APP_ENV === "production" ? undefined : { index: false, follow: false },
 };
 
-export const viewport: Viewport = { themeColor: "#07080b", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#ffffff", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        {/* Active les états initiaux des animations avant le premier rendu (évite le flash),
+            sauf si l'utilisateur réduit les mouvements. Filet de sécurité : tout redevient visible après 4 s. */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.classList.add('js-motion');setTimeout(function(){if(!window.__motionReady)d.classList.remove('js-motion')},4000)}}catch(e){}})();` }} />
+      </head>
       <body className="min-h-dvh font-sans antialiased">
         {children}
         <AttributionTracker />

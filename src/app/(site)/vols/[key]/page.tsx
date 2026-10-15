@@ -6,6 +6,7 @@ import { DemoPill, PriceTag, StatusPill } from "@/components/FlightCard";
 import { DemoBanner } from "@/components/DemoBanner";
 import { ViewTracker } from "@/components/ViewTracker";
 import { Photo } from "@/components/Photo";
+import { Split } from "@/components/motion/Split";
 import { getPublicLeg } from "@/connectors/registry";
 import { photoForCity } from "@/content/media";
 import { formatDate, formatTime, timeAgo } from "@/lib/format";
@@ -39,55 +40,54 @@ export default async function FlightPage({ params }: Props) {
   return (
     <main className="pb-28 lg:pb-0">
       <ViewTracker event="view_flight" params={{ key: leg.key }} />
-      <section className="relative isolate h-[62svh] min-h-[420px] overflow-hidden">
-        <Photo photo={photoForCity(leg.to.city)} priority sizes="100vw" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-night" />
-        <SiteHeader overlay />
-        <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-5 pb-10 sm:px-8">
-          <div className="flex flex-wrap gap-2"><StatusPill tone="glass" />{leg.isDemo && <DemoPill />}</div>
-          <h1 className="font-display mt-5 text-6xl leading-[0.95] font-light sm:text-8xl">
-            {leg.from.city} <span className="text-champagne">—</span><br className="sm:hidden" /> {leg.to.city}
-          </h1>
-          <p className="mt-4 text-[13px] tracking-[0.22em] text-pearl/80 uppercase">{formatDate(leg.departureStart)} · {formatTime(leg.departureStart)}</p>
+      <SiteHeader />
+      <section className="sky pt-36 pb-14">
+        <div className="wrap">
+          <Link href="/vols" className="text-[17px] text-ink/70 underline-offset-4 hover:underline">← Tous les vols</Link>
+          <div className="mt-8 flex flex-wrap items-center gap-3"><StatusPill />{leg.isDemo && <DemoPill />}</div>
+          <Split as="h1" className="t-display mt-5 text-[52px] sm:text-[104px]" text={`${leg.from.city} →\n${leg.to.city}.`} />
+          <p data-reveal="" className="mt-6 text-[20px]">{formatDate(leg.departureStart)} · {formatTime(leg.departureStart)}–{formatTime(leg.departureEnd)}</p>
         </div>
       </section>
+      <div className="wrap">
+        <div data-clip="" className="relative -mt-2 aspect-[16/9] overflow-hidden sm:aspect-[21/9]"><Photo photo={photoForCity(leg.to.city)} priority sizes="100vw" /></div>
+      </div>
 
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[1.3fr_0.7fr]">
+      <div className="wrap grid gap-14 py-16 lg:grid-cols-[1.3fr_0.7fr]">
         <section>
           {leg.isDemo && <DemoBanner />}
-          <Link href="/vols" className="text-[13px] text-smoke underline-offset-4 hover:underline">← Tous les vols</Link>
-          <dl className="mt-8 grid gap-x-10 border-t hairline sm:grid-cols-2">
+          <dl data-reveal-group="" className="grid gap-x-12 sm:grid-cols-2">
             {facts.map(([k, v]) => (
-              <div key={k} className="border-b hairline py-5"><dt className="lx-label mb-1">{k}</dt><dd className="text-[16px]">{v}</dd></div>
+              <div key={k} data-reveal-item="" className="border-t hair py-5"><dt className="text-[15px] text-ash">{k}</dt><dd className="mt-1 text-[20px]">{v}</dd></div>
             ))}
           </dl>
-          <div className="mt-10 space-y-4 text-[15px] leading-relaxed text-smoke">
-            <h2 className="font-display text-3xl font-light text-pearl">Ce qu&apos;il faut savoir</h2>
-            {leg.conditions && <p>{leg.conditions}</p>}
-            <ul className="space-y-3">
-              <li className="flex gap-3"><span className="text-champagne">—</span>Un Empty Leg dépend de la mission principale de l&apos;avion : horaire, itinéraire ou disponibilité peuvent changer jusqu&apos;au départ.</li>
-              <li className="flex gap-3"><span className="text-champagne">—</span>Le prix concerne l&apos;appareil entier. Le montant total (taxes, frais d&apos;aéroport) figure dans la proposition écrite.</li>
-              <li className="flex gap-3"><span className="text-champagne">—</span>L&apos;opérateur aérien est nommé dans la proposition, avant tout engagement.</li>
+          <div className="mt-14">
+            <h2 className="t-heading text-[37px]">Ce qu&apos;il faut savoir.</h2>
+            {leg.conditions && <p className="t-body mt-5 text-ash">{leg.conditions}</p>}
+            <ul data-reveal-group="" className="t-body mt-6 space-y-4">
+              {[
+                "Un Empty Leg dépend de la mission principale de l'avion : horaire, itinéraire ou disponibilité peuvent changer jusqu'au départ.",
+                "Le prix concerne l'appareil entier. Le montant total (taxes, frais d'aéroport) figure dans la proposition écrite.",
+                "L'opérateur aérien est nommé dans la proposition, avant tout engagement.",
+              ].map((t) => <li key={t} data-reveal-item="" className="border-t hair pt-4 text-ink/80">{t}</li>)}
             </ul>
-            {leg.attribution && <p className="text-[11px] text-ash">{leg.attribution}</p>}
+            {leg.attribution && <p className="mt-6 text-[13px] text-ash">{leg.attribution}</p>}
           </div>
         </section>
-
         <aside className="hidden lg:block">
-          <div className="lx-card sticky top-28 p-7">
-            <PriceTag leg={leg} size="lg" />
-            <p className="mt-2 text-[12px] text-ash">pour l&apos;appareil entier{leg.maxPassengers ? `, jusqu'à ${leg.maxPassengers} passagers` : ""}</p>
-            <Link href={book} className="lx-btn mt-7 w-full">Réserver ce vol</Link>
-            <p className="mt-4 text-center text-[12px] text-ash">2 étapes · aucun paiement maintenant</p>
+          <div className="sticky top-28 bg-ink p-8 text-white">
+            <PriceTag leg={leg} size="lg" tone="white" />
+            <p className="mt-2 text-[15px] text-white/60">pour l&apos;appareil entier{leg.maxPassengers ? `, jusqu'à ${leg.maxPassengers} passagers` : ""}</p>
+            <Link href={book} className="pill mt-8 w-full bg-white text-ink">Réserver ce vol</Link>
+            <p className="mt-4 text-center text-[15px] text-white/60">2 écrans · aucun paiement maintenant</p>
           </div>
         </aside>
       </div>
 
-      {/* Barre de réservation mobile */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t hairline bg-night/90 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t hair bg-white/90 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
         <div className="flex items-center justify-between gap-4">
           <PriceTag leg={leg} />
-          <Link href={book} className="lx-btn px-6">Réserver</Link>
+          <Link href={book} className="pill">Réserver</Link>
         </div>
       </div>
     </main>

@@ -67,12 +67,12 @@ export function BookingFlow({ flight }: { flight: FlightDTO }) {
   }
 
   const summary = (
-    <aside className="lx-card overflow-hidden lg:sticky lg:top-28">
+    <aside className="border border-pebble bg-white overflow-hidden lg:sticky lg:top-28">
       <div className="relative h-40">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={flight.image.url} alt={flight.image.alt} className="absolute inset-0 h-full w-full object-cover" onError={(e) => (e.currentTarget.style.display = "none")} />
-        <div className="absolute inset-0 bg-gradient-to-t from-night-2 to-black/20" />
-        <p className="font-display absolute bottom-3 left-5 text-3xl font-light">{route}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <p className="t-heading absolute bottom-4 left-5 text-[30px] text-white">{route}</p>
       </div>
       <dl className="space-y-3 p-5 text-[13px]">
         <div className="flex justify-between gap-4"><dt className="text-ash">Date</dt><dd className="text-right first-letter:uppercase">{fmtDate(flight.departureWindow.start)}</dd></div>
@@ -80,12 +80,12 @@ export function BookingFlow({ flight }: { flight: FlightDTO }) {
         <div className="flex justify-between gap-4"><dt className="text-ash">Aéroports</dt><dd className="text-right">{flight.from.icao ?? flight.from.airport} → {flight.to.icao ?? flight.to.airport}</dd></div>
         {(flight.aircraft.type || flight.aircraft.category) && <div className="flex justify-between gap-4"><dt className="text-ash">Appareil</dt><dd className="text-right">{flight.aircraft.type ?? flight.aircraft.category}</dd></div>}
         <div className="flex justify-between gap-4"><dt className="text-ash">Voyageurs</dt><dd>{pax}</dd></div>
-        <div className="flex items-end justify-between gap-4 border-t hairline pt-4">
+        <div className="flex items-end justify-between gap-4 border-t hair pt-4">
           <dt className="text-ash">{flight.price?.kind === "operator" ? "Prix opérateur" : "Prix indicatif"}<br /><span className="text-[11px]">pour l&apos;appareil entier</span></dt>
-          <dd className="font-display text-4xl font-light">{flight.price ? fmtMoney(flight.price.amount, flight.price.currency) : "Sur demande"}</dd>
+          <dd className="t-heading text-[37px]">{flight.price ? fmtMoney(flight.price.amount, flight.price.currency) : "Sur demande"}</dd>
         </div>
       </dl>
-      <p className="border-t hairline px-5 py-4 text-[11.5px] leading-relaxed text-ash">Aucun paiement maintenant. Le prix total (taxes et frais inclus) figure dans la proposition écrite.</p>
+      <p className="border-t hair px-5 py-4 text-[11.5px] leading-relaxed text-ash">Aucun paiement maintenant. Le prix total (taxes et frais inclus) figure dans la proposition écrite.</p>
     </aside>
   );
 
@@ -96,33 +96,33 @@ export function BookingFlow({ flight }: { flight: FlightDTO }) {
   return (
     <div className="grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
       <form ref={formRef} onSubmit={onSubmit} noValidate className="relative space-y-8">
-        {flight.isDemo && <p className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-100">Vol <strong>fictif</strong> de démonstration : la demande sera enregistrée pour test uniquement.</p>}
+        {flight.isDemo && <p className="rounded-full border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-900">Vol <strong>fictif</strong> de démonstration : la demande sera enregistrée pour test uniquement.</p>}
         <Steps step={step} labels={["Voyageurs", "Coordonnées"]} />
 
         <div className={step === 0 ? "" : "hidden"}>
-          <h1 className="font-display text-4xl font-light sm:text-5xl">Qui voyage ?</h1>
-          <div className="mt-6 divide-y divide-white/10 border-y hairline">
+          <h1 className="t-display text-[44px] sm:text-[63px]">Qui voyage ?</h1>
+          <div className="mt-6 divide-y divide-pebble border-y hair">
             <Counter name="passengers" label="Passagers" sub={flight.maxPassengers ? `Jusqu'à ${flight.maxPassengers} à bord` : undefined} value={pax} onChange={setPax} min={1} max={maxPax} />
             <Counter name="cabinBags" label="Bagages cabine" sub="Sacs souples de préférence" value={cabin} onChange={setCabin} max={30} />
             <Counter name="holdBags" label="Bagages en soute" sub="Valises, skis, golf…" value={hold} onChange={setHold} max={30} />
           </div>
           <div className="mt-6">
-            <Field id="comments" label="Précisions" hint="facultatif"><textarea id="comments" name="comments" rows={2} className="lx-field" placeholder="Animal à bord, horaire préféré, transfert…" /></Field>
+            <Field id="comments" label="Précisions" hint="facultatif"><textarea id="comments" name="comments" rows={2} className="in-field" placeholder="Animal à bord, horaire préféré, transfert…" /></Field>
           </div>
         </div>
 
         <div className={step === 1 ? "" : "hidden"}>
-          <h1 className="font-display mb-6 text-4xl font-light sm:text-5xl">Vos coordonnées</h1>
+          <h1 className="t-display mb-8 text-[44px] sm:text-[63px]">Vos coordonnées</h1>
           <ContactFields errors={errors} />
         </div>
 
-        {errors._ && <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-200">{errors._}</p>}
+        {errors._ && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-800">{errors._}</p>}
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           {step === 1
-            ? <button type="button" onClick={() => setStep(0)} className="text-[13px] text-smoke underline underline-offset-4">← Voyageurs</button>
-            : <Link href={`/vols/${encodeURIComponent(flight.id)}`} className="text-[13px] text-smoke underline underline-offset-4">← Retour au vol</Link>}
-          <button type="submit" className="lx-btn w-full sm:w-auto" disabled={sending}>{step === 0 ? "Continuer" : sending ? "Envoi…" : "Demander la réservation"}</button>
+            ? <button type="button" onClick={() => setStep(0)} className="text-[13px] text-ash underline underline-offset-4">← Voyageurs</button>
+            : <Link href={`/vols/${encodeURIComponent(flight.id)}`} className="text-[13px] text-ash underline underline-offset-4">← Retour au vol</Link>}
+          <button type="submit" className="pill w-full sm:w-auto" disabled={sending}>{step === 0 ? "Continuer" : sending ? "Envoi…" : "Demander la réservation"}</button>
         </div>
       </form>
       {summary}

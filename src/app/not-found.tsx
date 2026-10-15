@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center justify-center px-5 text-center">
-      <p className="lx-eyebrow">Introuvable</p>
-      <h1 className="font-display mt-4 text-6xl font-light">Ce vol a peut-être décollé.</h1>
-      <p className="mt-4 text-smoke">Les Empty Legs partent vite. D&apos;autres vols vous attendent.</p>
-      <Link href="/vols" className="lx-btn mt-10">Voir les vols</Link>
+    <main className="sky flex min-h-dvh flex-col items-center justify-center px-5 text-center">
+      <p className="t-hero text-[34vw] text-ink/10 sm:text-[240px]">404</p>
+      <h1 className="t-display -mt-[0.6em] text-[44px] sm:text-[63px]">Ce vol a décollé.</h1>
+      <p className="t-body mt-4 text-ink/70">Les Empty Legs partent vite. D&apos;autres vous attendent.</p>
+      <Link href="/vols" className="pill mt-10">Voir les vols</Link>
     </main>
   );
 }
