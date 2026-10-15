@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SALES
+}
+
+/// Pipeline commercial. Une demande n'est JAMAIS une réservation :
+/// seul CONFIRMED correspond à une confirmation écrite de l'opérateur ET du client.
+enum LeadStatus {
+  NEW
+  TO_CALL
+  SEARCHING
+  PROPOSAL_SENT
+  CONFIRMED
+  LOST
+}
+
+enum TripType {
+  ONE_WAY
+  ROUND_TRIP
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+/// Statut public d'une offre. Il n'existe volontairement pas de statut "disponible garanti".
+enum OfferStatus {
+  TO_CONFIRM
+  UNAVAILABLE
+}
+
+enum PriceKind {
+  ON_REQUEST
+  INDICATIVE
+  CONFIRMED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         Role       @default(SALES)
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  leads        Lead[]     @relation("AssignedLeads")
+  notes        LeadNote[]
+  events       LeadEvent[]
+  proposals    Proposal[]
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  reference       String     @unique
+  status          LeadStatus @default(NEW)
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  departure       String
+  arrival         String
+  departureDate   DateTime   @db.Date
+  returnDate      DateTime?  @db.Date
+  tripType        TripType   @default(ONE_WAY)
+  flexibilityDays Int        @default(0)
+  passengers      Int
+  budget          Int?
+  currency        String     @default("EUR")
+  comments        String?
+  offerId         String?
+  offer           Offer?     @relation(fields: [offerId], references: [id], onDelete: SetNull)
+  offerSnapshot   Json?
+
+  // Acquisition
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  gclid       String?
+  landingPage String?
+  referrer    String?
+
+  // RGPD
+  consentContact Boolean  @default(false)
+  consentAt      DateTime?
+  ipHash         String?
+
+  assignedToId String?
+  assignedTo   User?    @relation("AssignedLeads", fields: [assignedToId], references: [id], onDelete: SetNull)
+  nextActionAt DateTime?
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  notes     LeadNote[]
+  events    LeadEvent[]
+  proposals Proposal[]
+
+  @@index([status, createdAt])
+  @@index([assignedToId])
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  body      String
+  createdAt DateTime @default(now())
+}
+
+/// Journal immuable des actions commerciales.
+model LeadEvent {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  type      String
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  @@index([leadId, createdAt])
+}
+
+model Proposal {
+  id                String         @id @default(cuid())
+  leadId            String
+  lead              Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title             String
+  operatorName      String?
+  aircraft          String?
+  priceAmount       Int
+  currency          String         @default("EUR")
+  commissionAmount  Int?
+  status            ProposalStatus @default(DRAFT)
+  operatorConfirmed Boolean        @default(false)
+  validUntil        DateTime?
+  createdById       String?
+  createdBy         User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+/// Offres Empty Leg saisies manuellement (obtenues par un canal autorisé) ou fictives (démo).
+/// Les résultats des fournisseurs API ne sont PAS stockés ici tant que leurs conditions ne l'autorisent pas.
+model Offer {
+  id               String      @id @default(cuid())
+  source           String      @default("manual")
+  externalId       String?
+  isDemo           Boolean     @default(false)
+  published        Boolean     @default(false)
+  status           OfferStatus @default(TO_CONFIRM)
+  fromCity         String
+  fromAirport      String
+  fromIcao         String?
+  toCity           String
+  toAirport        String
+  toIcao           String?
+  departureStart   DateTime
+  departureEnd     DateTime
+  maxPassengers    Int?
+  aircraftCategory String?
+  aircraftType     String?
+  showAircraft     Boolean     @default(false)
+  priceKind        PriceKind   @default(ON_REQUEST)
+  priceAmount      Int?
+  currency         String      @default("EUR")
+  conditions       String?
+  /// Provenance de l'information (opérateur, date, canal) — obligatoire pour une offre réelle.
+  provenance       String?
+  lastVerifiedAt   DateTime
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  leads            Lead[]
+
+  @@unique([source, externalId])
+  @@index([published, departureStart])
+}
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
