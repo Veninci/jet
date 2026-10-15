@@ -18,7 +18,7 @@ Animation : GSAP 3.15 + ScrollTrigger (licence « Standard no charge », usage c
 - Les pages Google Ads (`/lp/*`) n'ont volontairement aucune 3D, pour un affichage immédiat.
 
 ## Démarrer
-> Pas développeur ? Suivez **[LANCER-EN-LOCAL.md](LANCER-EN-LOCAL.md)** (3 commandes, Docker + Node.js).
+> Pas développeur ? Suivez **[LANCER-EN-LOCAL.md](LANCER-EN-LOCAL.md)** : Node.js suffit, `npm install` puis `npm run local` (base PostgreSQL intégrée via PGlite, navigateur ouvert automatiquement).
 
 ```bash
 cp .env.example .env            # renseigner DATABASE_URL et AUTH_SECRET (openssl rand -base64 48)

@@ -15,7 +15,8 @@
     "setup": "node scripts/setup.mjs",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "demo": "next build && next start"
+    "demo": "next build && next start",
+    "local": "node scripts/local.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
@@ -33,6 +34,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-socket": "^0.2.13",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",

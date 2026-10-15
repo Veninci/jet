@@ -1,78 +1,80 @@
 # Voir le site MACH sur votre ordinateur
 
-Comptez 15 minutes la première fois, puis 1 minute les fois suivantes.
-Les commandes se tapent dans le **Terminal** (Mac) ou **PowerShell** (Windows).
+Le site ne s'ouvre à l'adresse `http://localhost:3000` **que s'il est lancé sur votre ordinateur**,
+dans une fenêtre de terminal restée ouverte. Sinon le navigateur affiche « Ce site est inaccessible ».
 
-## 1. Installer deux logiciels (une seule fois)
+Il suffit de **Node.js** : pas de Docker, pas de base de données à installer.
 
-| Logiciel | Où le trouver | Vérification dans le terminal |
-|---|---|---|
-| **Node.js** (version LTS) | https://nodejs.org → bouton « LTS » | `node -v` affiche `v20.9` ou plus |
-| **Docker Desktop** (fait tourner la base de données) | https://www.docker.com/products/docker-desktop | `docker --version` affiche un numéro de version |
+## La première fois (10 minutes)
 
-Après l'installation, **ouvrez Docker Desktop** et attendez qu'il indique qu'il est démarré (« Engine running »).
+### 1. Installer Node.js
+Téléchargez la version **LTS** sur https://nodejs.org et installez-la (suivant, suivant…).
 
-## 2. Récupérer le code (une seule fois)
+### 2. Télécharger le site
+Sur https://github.com/Veninci/jet : bouton vert **Code** → **Download ZIP**.
+Double-cliquez sur le fichier téléchargé pour le décompresser (vous obtenez un dossier `jet-main`).
 
-Sur https://github.com/Veninci/jet → bouton vert **Code** → **Download ZIP**, puis décompressez le dossier
-(par exemple sur le Bureau). Si vous utilisez Git : `git clone https://github.com/Veninci/jet.git`.
+### 3. Ouvrir le Terminal dans ce dossier
+- **Mac** : ouvrez l'application **Terminal** (Cmd + Espace, tapez « Terminal »).
+  Tapez `cd ` (avec un espace après), **glissez le dossier `jet-main`** dans la fenêtre, puis appuyez sur Entrée.
+- **Windows** : ouvrez le dossier `jet-main`, clic droit dans un espace vide → **Ouvrir dans le Terminal**.
 
-Ouvrez ensuite le terminal **dans ce dossier** :
-- Mac : tapez `cd ` (avec un espace), glissez le dossier dans la fenêtre du terminal, puis Entrée
-- Windows : ouvrez le dossier, clic droit dans un espace vide → *Ouvrir dans le Terminal*
-
-Vérification : `ls` (Mac) ou `dir` (Windows) affiche notamment `package.json`.
-
-## 3. Installer (une seule fois)
+### 4. Installer puis lancer
+Copiez ces deux lignes dans le terminal (Entrée après chacune) :
 
 ```bash
-docker compose up -d
 npm install
-npm run setup
+npm run local
 ```
 
-Vérification : le terminal affiche **« ✔ Installation terminée. »** avec l'e-mail et le mot de passe
-de l'espace d'administration. Ils sont aussi enregistrés dans le fichier `ACCES-ADMIN-LOCAL.txt`.
+`npm install` prend une à deux minutes. Ensuite `npm run local` prépare tout et **ouvre le site
+dans votre navigateur**. Le terminal affiche :
 
-## 4. Lancer le site (à chaque fois)
+```
+✔ MACH est lancé.
+  Site :             http://localhost:3000
+  Administration :   http://localhost:3000/admin
+     e-mail :        admin@mach.local
+     mot de passe :  mach-xxxxxxxxxxxx
+```
+
+**Laissez la fenêtre du terminal ouverte** pendant toute la visite.
+
+## Les fois suivantes (1 minute)
+
+Ouvrez le Terminal dans le dossier `jet-main` (étape 3), puis tapez seulement :
 
 ```bash
-docker compose up -d
-npm run dev
+npm run local
 ```
 
-Puis ouvrez **http://localhost:3000** dans votre navigateur (Chrome ou Safari).
+## Arrêter
 
-- Le site : http://localhost:3000
-- Les vols : http://localhost:3000/vols
-- L'administration : http://localhost:3000/admin (identifiants de l'étape 3)
+Dans la fenêtre du terminal : **Ctrl + C**.
 
-La première page met quelques secondes à s'afficher (compilation). Pour un rendu plus fluide,
-identique à la mise en ligne, utilisez `npm run demo` à la place de `npm run dev` (plus long à démarrer).
+## Bon à savoir
 
-**Arrêter** : dans le terminal, `Ctrl + C`, puis `docker compose down`.
-
-## Voir le site sur votre iPhone (même Wi-Fi)
-
-Lancez le site, trouvez l'adresse IP de l'ordinateur (Mac : Réglages → Wi-Fi → Détails ;
-Windows : `ipconfig`, ligne « Adresse IPv4 »), puis ouvrez `http://ADRESSE-IP:3000` sur l'iPhone.
-Si la page ne s'ouvre pas, le pare-feu de l'ordinateur bloque l'accès : autorisez Node.js quand il le demande.
-
-## Ce que vous verrez
-
-- Les vols affichés sont **fictifs** (marqués « Fictif ») : ils servent à tester le site.
-- Les demandes envoyées arrivent dans l'administration. Les e-mails ne partent pas :
-  ils s'affichent dans le terminal (aucune clé d'envoi configurée).
-- Les photos viennent d'Unsplash et nécessitent une connexion Internet.
-- En mode `npm run dev`, un petit rond « N » en bas à gauche est l'outil de développement de Next.js :
-  il n'apparaît pas sur le site en ligne.
+- Les vols affichés sont **fictifs** (marqués « Fictif ») : ils servent à essayer le site.
+- Les demandes envoyées arrivent dans l'administration ; aucun e-mail ne part.
+- Le mot de passe de l'administration est aussi enregistré dans le fichier `ACCES-ADMIN-LOCAL.txt`.
+- Le petit rond « N » en bas à gauche est un outil de développement : il n'existe pas sur le site en ligne.
+- Les photos de destination viennent d'Unsplash : il faut être connecté à Internet.
+- **Sur votre iPhone** (même Wi-Fi) : ouvrez `http://ADRESSE-IP-DU-MAC:3000`
+  (adresse dans Réglages Système → Wi-Fi → Détails). Autorisez Node.js si le Mac le demande.
 
 ## En cas de problème
 
-| Message | Solution |
+| Ce que vous voyez | Solution |
 |---|---|
-| `Impossible de joindre la base de données` | Ouvrez Docker Desktop, attendez qu'il soit démarré, relancez `docker compose up -d` puis `npm run setup` |
-| `port is already allocated` (5433) | Un autre programme utilise ce port : changez `5433` dans `docker-compose.yml` et dans `.env` |
-| `Port 3000 is in use` | Lancez `npm run dev -- -p 3001` et ouvrez http://localhost:3001 |
-| `npm` ou `node` introuvable | Réinstallez Node.js puis fermez et rouvrez le terminal |
-| Mot de passe admin perdu | Relancez `npm run setup` : un nouveau mot de passe est créé |
+| `command not found: npm` ou `node` | Node.js n'est pas installé, ou le terminal était déjà ouvert : installez-le, fermez et rouvrez le Terminal |
+| `Node.js … est trop ancien` | Installez la version LTS depuis https://nodejs.org |
+| `Les dépendances ne sont pas installées` | Tapez `npm install` puis `npm run local` |
+| `Le site s'est arrêté` | Il tourne peut-être déjà dans une autre fenêtre : fermez-la (Ctrl + C) et relancez |
+| `npm error … ENOENT … package.json` | Le terminal n'est pas dans le bon dossier : refaites l'étape 3 |
+| Le navigateur ne s'ouvre pas tout seul | Ouvrez l'adresse affichée dans le terminal (`http://localhost:3000`) |
+
+---
+
+### Option avancée : avec Docker (base PostgreSQL classique)
+Pour les développeurs : `docker compose up -d`, mettez `DATABASE_URL="postgresql://mach:mach@localhost:5433/mach"`
+dans `.env`, puis `npm run setup` et `npm run dev`.
